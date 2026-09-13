@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>經治 & 昀儀 的家宴邀請</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', '微軟正黑體', serif;
+            background: linear-gradient(135deg, #fff0f3 0%, #ffe4e8 50%, #ffd6e0 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* 玫瑰花瓣動畫 */
+        .petal-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .petal {
+            position: absolute;
+            top: -60px;
+            opacity: 0;
+            animation: petalFall linear infinite;
+        }
+
+        .petal svg {
+            display: block;
+        }
+
+        @keyframes petalFall {
+            0% {
+                opacity: 0;
+                transform: translateY(0) rotate(0deg) scale(0.8);
+            }
+            10% {
+                opacity: 0.85;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(110vh) rotate(720deg) scale(1.1);
+            }
+        }
+
+        /* 主要內容 */
+        .main-container {
+            position: relative;
+            z-index: 1;
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 30px 20px 60px;
+        }
+
+        /* 頂部裝飾 */
+        .top-decoration {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .top-decoration .roses {
+            font-size: 2rem;
+            letter-spacing: 8px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        /* 邀請卡主體 */
+        .invitation-card {
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 24px;
+            padding: 45px 40px;
+            box-shadow: 0 20px 60px rgba(220, 80, 100, 0.15),
+                        0 0 0 1px rgba(220, 80, 100, 0.08);
+            border: 2px solid rgba(220, 80, 100, 0.12);
+            margin-bottom: 25px;
+        }
+
+        /* 標題區 */
+        .header-section {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .wedding-label {
+            font-size: 0.85rem;
+            letter-spacing: 4px;
+            color: #c06080;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+        }
+
+        .couple-names {
+            font-size: 2.8rem;
+            color: #8b2040;
+            font-weight: bold;
+            margin-bottom: 8px;
+            text-shadow: 2px 2px 4px rgba(139, 32, 64, 0.1);
+            line-height: 1.2;
+        }
+
+        .ampersand {
+            color: #d4607a;
+            font-style: italic;
+            font-size: 2.2rem;
+        }
+
+        .heart-divider {
+            font-size: 1.5rem;
+            margin: 12px 0;
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            color: #b06070;
+            letter-spacing: 2px;
+        }
+
+        /* 邀請語 */
+        .invite-message {
+            background: linear-gradient(135deg, #fff5f7, #ffe8ec);
+            border-radius: 16px;
+            padding: 25px 28px;
+            margin-bottom: 28px;
+            border-left: 4px solid #d4607a;
+            font-size: 1rem;
+            color: #6b3040;
+            line-height: 1.9;
+            text-align: justify;
+        }
+
+        .invite-message .highlight {
+            color: #c0304a;
+            font-weight: bold;
+        }
+
+        /* 活動資訊 */
+        .event-details {
+            margin-bottom: 28px;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 14px 18px;
+            background: #fff8f9;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            border: 1px solid rgba(220, 80, 100, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .detail-item:hover {
+            transform: translateX(4px);
+            box-shadow: 0 4px 12px rgba(220, 80, 100, 0.1);
+        }
+
+        .detail-icon {
+            font-size: 1.3rem;
+            margin-right: 14px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .detail-content .label {
+            font-size: 0.8rem;
+            color: #c06080;
+            letter-spacing: 1px;
+            margin-bottom: 3px;
+        }
+
+        .detail-content .value {
+            font-size: 1rem;
+            color: #4a2030;
+            font-weight: 500;
+            line-height: 1.5;
+        }
+
+        .detail-content .value a {
+            color: #c0304a;
+            text-decoration: none;
+        }
+
+        .detail-content .value a:hover {
+            text-decoration: underline;
+        }
+
+        /* 停車場連結按鈕 */
+        .parking-link {
+            display: inline-block;
+            margin: 4px 6px 4px 0;
+            padding: 6px 14px;
+            background: #fff0f3;
+            border: 1px solid #f0c0cc;
+            border-radius: 20px;
+            color: #c0304a;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .parking-link:hover {
+            background: #ffe4e8;
+            border-color: #d4607a;
+            text-decoration: none;
+        }
+
+        /* 區塊標題 */
+        .section-title {
+            text-align: center;
+            font-size: 1.1rem;
+            color: #8b2040;
+            letter-spacing: 3px;
+            margin-bottom: 22px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title::before,
+        .section-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #d4607a, transparent);
+        }
+
+        /* RSVP 表單卡片 */
+        .rsvp-card {
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 24px;
+            padding: 40px 35px;
+            box-shadow: 0 20px 60px rgba(220, 80, 100, 0.15),
+                        0 0 0 1px rgba(220, 80, 100, 0.08);
+            border: 2px solid rgba(220, 80, 100, 0.12);
+        }
+
+        /* 表單元素 */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.92rem;
+            color: #7a3050;
+            margin-bottom: 8px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .required-mark {
+            color: #e05070;
+            margin-left: 3px;
+        }
+
+        .form-input,
+        .form-textarea,
+        .form-select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #f0c0cc;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            color: #4a2030;
+            background: #fff8f9;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            font-family: inherit;
+            appearance: none;
+            -webkit-appearance: none;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: #d4607a;
+            box-shadow: 0 0 0 3px rgba(212, 96, 122, 0.15);
+            background: #fff;
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+            line-height: 1.6;
+        }
+
+        /* 下拉選單箭頭 */
+        .select-wrapper {
+            position: relative;
+        }
+
+        .select-wrapper::after {
+            content: '▼';
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #d4607a;
+            font-size: 0.7rem;
+            pointer-events: none;
+        }
+
+        /* 單選按鈕 */
+        .radio-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .radio-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            padding: 10px 20px;
+            border: 2px solid #f0c0cc;
+            border-radius: 25px;
+            transition: all 0.3s;
+            font-size: 0.92rem;
+            color: #7a3050;
+            background: #fff8f9;
+            flex: 1;
+            justify-content: center;
+            min-width: 120px;
+        }
+
+        .radio-label:hover {
+            border-color: #d4607a;
+            background: #fff0f3;
+        }
+
+        .radio-label input[type="radio"] {
+            display: none;
+        }
+
+        .radio-label.selected {
+            border-color: #d4607a;
+            background: linear-gradient(135deg, #fff0f3, #ffe4e8);
+            color: #c0304a;
+            font-weight: bold;
+        }
+
+        .radio-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            border: 2px solid #d4a0b0;
+            flex-shrink: 0;
+            transition: all 0.3s;
+        }
+
+        .radio-label.selected .radio-dot {
+            background: #d4607a;
+            border-color: #d4607a;
+        }
+
+        /* 素食數量（條件顯示） */
+        .vegetarian-count-group {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .vegetarian-count-group.show {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 送出按鈕 */
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #d4607a, #b84060);
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-size: 1.05rem;
+            font-weight: bold;
+            letter-spacing: 3px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+            box-shadow: 0 6px 20px rgba(180, 60, 90, 0.3);
+            font-family: inherit;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 28px rgba(180, 60, 90, 0.4);
+            background: linear-gradient(135deg, #e06080, #c04870);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* 成功訊息 */
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(135deg, #fff0f3, #ffe4e8);
+            border-radius: 16px;
+            border: 2px solid rgba(212, 96, 122, 0.3);
+            margin-top: 20px;
+        }
+
+        .success-message .success-icon {
+            font-size: 3rem;
+            margin-bottom: 12px;
+        }
+
+        .success-message h3 {
+            color: #8b2040;
+            font-size: 1.3rem;
+            margin-bottom: 8px;
+        }
+
+        .success-message p {
+            color: #b06070;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* 底部 */
+        .footer-decoration {
+            text-align: center;
+            margin-top: 30px;
+            color: #c08090;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+        }
+
+        /* 數字輸入 */
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* RWD */
+        @media (max-width: 480px) {
+            .invitation-card,
+            .rsvp-card {
+                padding: 28px 20px;
+            }
+
+            .couple-names {
+                font-size: 2rem;
+            }
+
+            .radio-group {
+                flex-direction: column;
+            }
+
+            .radio-label {
+                min-width: unset;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 玫瑰花瓣背景 -->
+    <div class="petal-container" id="petalContainer"></div>
+
+    <div class="main-container">
+
+        <!-- 頂部裝飾 -->
+        <div class="top-decoration">
+            <div class="roses">🌹 🌸 🌹</div>
+        </div>
+
+        <!-- 邀請卡主體 -->
+        <div class="invitation-card">
+            <div class="header-section">
+                <div class="wedding-label">Wedding Invitation</div>
+                <div class="couple-names">
+                    經治 <span class="ampersand">&amp;</span> 昀儀
+                </div>
+                <div class="heart-divider">💕</div>
+                <div class="subtitle">誠摯邀請您共同見證這美好時刻</div>
+            </div>
+
+            <!-- 邀請語 -->
+            <div class="invite-message">
+                <span class="highlight">經治</span> &amp; <span class="highlight">昀儀</span><br>
+                準備一起走進人生的下一個階段了。💍<br><br>
+                一路走來，很幸運有你們的陪伴，<br>
+                在這個重要的時刻，也想把這份喜悅與你們分享。❤️<br><br>
+                誠摯邀請你／妳來參加我們的家宴，<br>
+                一起吃頓飯、聊聊天，輕鬆聚聚，<br>
+                也一起留下屬於我們的美好回憶。🌹<br><br>
+                期待與你們見面，一起分享這份幸福！🥂
+            </div>
+
+            <!-- 活動資訊 -->
+            <div class="event-details">
+                <div class="detail-item">
+                    <div class="detail-icon">📅</div>
+                    <div class="detail-content">
+                        <div class="label">時　間</div>
+                        <div class="value">2027 年 1 月 23 日（六）中午 11:00</div>
+                    </div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-icon">📍</div>
+                    <div class="detail-content">
+                        <div class="label">地　點</div>
+                        <div class="value">
+                            福臨廚房<br>
+                            <a href="https://maps.google.com/?q=新竹縣竹北市竹北里中山路663號" target="_blank">
+                                新竹縣竹北市竹北里中山路663號 📌
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-icon">🚗</div>
+                    <div class="detail-content">
+                        <div class="label">停車場</div>
+                        <div class="value">
+                            <a href="https://maps.app.goo.gl/xaHG7x9sWwN3tf8g6" target="_blank" class="parking-link">博愛停車場（一）</a>
+                            <a href="https://maps.app.goo.gl/Q7NhzY21VBVsYba86" target="_blank" class="parking-link">博愛停車場（二）</a>
+                            <a href="https://maps.app.goo.gl/pp6EYdk6cDkto4Mu8" target="_blank" class="parking-link">竹北站前停車場</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RSVP 表單 -->
+        <div class="rsvp-card">
+            <div class="section-title">出席回覆</div>
+
+            <form id="rsvpForm">
+
+                <!-- 1. 參加人 -->
+                <div class="form-group">
+                    <label class="form-label">
+                        👤 參加人姓名
+                        <span class="required-mark">*</span>
+                    </label>
+                    <input
+                        type="text"
+                        class="form-input"
+                        id="guestName"
+                        placeholder="請輸入您的姓名"
+                        required
+                    >
+                </div>
+
+                <!-- 2. 親屬關係 -->
+                <div class="form-group">
+                    <label class="form-label">
+                        💑 親屬關係
+                        <span class="required-mark">*</span>
+                    </label>
+                    <div class="radio-group" id="relationGroup">
+                        <label class="radio-label" onclick="selectRadio(this, 'relation', '男方親友')">
+                            <input type="radio" name="relation" value="男方親友">
+                            <span class="radio-dot"></span>
+                            🤵 男方親友
+                        </label>
+                        <label class="radio-label" onclick="selectRadio(this, 'relation', '女方親友')">
+                            <input type="radio" name="relation" value="女方親友">
+                            <span class="radio-dot"></span>
+                            👰 女方親友
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 3. 參加人數 -->
+                <div class="form-group">
+                    <label class="form-label" for="guestCount">
+                        👥 參加人數
+                        <span class="required-mark">*</span>
+                    </label>
+                    <input
+                        type="number"
+                        class="form-input"
+                        id="guestCount"
+                        placeholder="請輸入參加人數"
+                        min="1"
+                        required
+                    >
+                </div>
+
+                <!-- 4. 兒童座椅 -->
+                <div class="form-group">
+                    <label class="form-label" for="childSeat">
+                        🪑 需要幾張兒童座椅
+                        <span class="required-mark">*</span>
+                    </label>
+                    <input
+                        type="number"
+                        class="form-input"
+                        id="childSeat"
+                        placeholder="不需要請填 0"
+                        min="0"
+                        required
+                    >
+                </div>
+
+                <!-- 5. 是否提供素食 -->
+                <div class="form-group">
+                    <label class="form-label">
+                        🥗 是否需要素食
+                        <span class="required-mark">*</span>
+                    </label>
+                    <div class="radio-group" id="vegGroup">
+                        <label class="radio-label" onclick="selectRadio(this, 'vegetarian', '是'); toggleVeg(true)">
+                            <input type="radio" name="vegetarian" value="是">
+                            <span class="radio-dot"></span>
+                            ✅ 是
+                        </label>
+                        <label class="radio-label" onclick="selectRadio(this, 'vegetarian', '否'); toggleVeg(false)">
+                            <input type="radio" name="vegetarian" value="否">
+                            <span class="radio-dot"></span>
+                            ❌ 否
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 6. 素食數量（條件顯示） -->
+                <div class="form-group vegetarian-count-group" id="vegCountGroup">
+                    <label class="form-label" for="vegCount">
+                        🌿 素食份數
+                        <span class="required-mark">*</span>
+                    </label>
+                    <input
+                        type="number"
+                        class="form-input"
+                        id="vegCount"
+                        placeholder="請輸入素食份數"
+                        min="1"
+                    >
+                </div>
+
+                <!-- 7. 祝福的話 -->
+                <div class="form-group">
+                    <label class="form-label" for="blessing">
+                        💌 祝福的話
+                    </label>
+                    <textarea
+                        class="form-textarea"
+                        id="blessing"
+                        placeholder="請留下您對新人的祝福 🌹"
+                    ></textarea>
+                </div>
+
+                <!-- 送出 -->
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    💕 確認出席，送出回覆
+                </button>
+
+            </form>
+
+            <!-- 成功訊息 -->
+            <div class="success-message" id="successMessage">
+                <div class="success-icon">🌹</div>
+                <h3>感謝您的回覆！</h3>
+                <p>
+                    我們已收到您的出席確認<br>
+                    期待在喜宴上與您相見 💕<br><br>
+                    敬請期待這美好的一天！
+                </p>
+            </div>
+        </div>
+
+        <!-- 底部裝飾 -->
+        <div class="footer-decoration">
+            🌹 經治 &amp; 昀儀 2027.01.23 🌹
+        </div>
+
+    </div>
+
+    <script>
+        // =============================================
+        // 玫瑰花瓣生成
+        // =============================================
+        const petalColors = [
+            ['#ff8fa3', '#ff4d6d'],  // 粉紅玫瑰
+            ['#ffb3c1', '#ff6b8a'],  // 淡粉玫瑰
+            ['#ff0a54', '#c9184a'],  // 深紅玫瑰
+            ['#ffccd5', '#ff8fa3'],  // 淡色
+            ['#ff4d6d', '#a4133c'],  // 暗紅
+        ];
+
+        function createRosePetal() {
+            const container = document.getElementById('petalContainer');
+            const petal = document.createElement('div');
+            petal.classList.add('petal');
+
+            const size = Math.random() * 22 + 14; // 14~36px
+            const colors = petalColors[Math.floor(Math.random() * petalColors.length)];
+            const left = Math.random() * 100;
+            const duration = Math.random() * 6 + 7; // 7~13s
+            const delay = Math.random() * 8;
+            const drift = (Math.random() - 0.5) * 120;
+
+            // SVG 玫瑰花瓣形狀
+            petal.innerHTML = `
+                <svg width="${size}" height="${size * 1.3}" viewBox="0 0 30 40" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <radialGradient id="pg${Math.floor(Math.random()*9999)}" cx="50%" cy="40%" r="60%">
+                            <stop offset="0%" stop-color="${colors[0]}" stop-opacity="0.95"/>
+                            <stop offset="100%" stop-color="${colors[1]}" stop-opacity="0.75"/>
+                        </radialGradient>
+                    </defs>
+                    <path d="M15 2 C8 2, 2 8, 2 16 C2 26, 10 36, 15 38 C20 36, 28 26, 28 16 C28 8, 22 2, 15 2Z"
+                          fill="url(#pg${Math.floor(Math.random()*9999)})"
+                          opacity="0.88"/>
+                    <path d="M15 5 C11 8, 8 13, 9 19 C10 25, 13 31, 15 34"
+                          stroke="${colors[0]}" stroke-width="0.8" fill="none" opacity="0.4"/>
+                    <path d="M15 5 C19 8, 22 13, 21 19 C20 25, 17 31, 15 34"
+                          stroke="${colors[0]}" stroke-width="0.8" fill="none" opacity="0.4"/>
+                </svg>
+            `;
+
+            petal.style.cssText = `
+                left: ${left}%;
+                animation-duration: ${duration}s;
+                animation-delay: ${delay}s;
+                --drift: ${drift}px;
+            `;
+
+            // 加入飄移效果
+            petal.style.animation = `petalFall ${duration}s ${delay}s linear infinite`;
+
+            // 讓花瓣左右飄移
+            const keyframe = `
+                @keyframes drift_${Math.floor(Math.random()*99999)} {
+                    0% { margin-left: 0; }
+                    50% { margin-left: ${drift}px; }
+                    100% { margin-left: ${drift * 0.3}px; }
+                }
+            `;
+
+            container.appendChild(petal);
+
+            // 添加左右飄移
+            petal.style.animation = `petalFall ${duration}s ${delay}s linear infinite`;
+            petal.addEventListener('animationiteration', () => {
+                petal.style.left = `${Math.random() * 100}%`;
+            });
+        }
+
+        // 生成35朵花瓣
+        for (let i = 0; i < 35; i++) {
+            createRosePetal();
+        }
+
+        // =============================================
+        // 單選按鈕互動
+        // =============================================
+        function selectRadio(clickedLabel, groupName, value) {
+            const labels = document.querySelectorAll(`[name="${groupName}"]`);
+            labels.forEach(radio => {
+                radio.closest('.radio-label').classList.remove('selected');
+            });
+            clickedLabel.classList.add('selected');
+        }
+
+        // =============================================
+        // 素食切換
+        // =============================================
+        function toggleVeg(show) {
+            const vegGroup = document.getElementById('vegCountGroup');
+            const vegInput = document.getElementById('vegCount');
+            if (show) {
+                vegGroup.classList.add('show');
+                vegInput.required = true;
+            } else {
+                vegGroup.classList.remove('show');
+                vegInput.required = false;
+                vegInput.value = '';
+            }
+        }
+
+        // =============================================
+        // 表單送出
+        // =============================================
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyFQqe8PQGFDIo6EpJFw7qO_LSZO5VWJUEU3M37BvklOYq7CE20unmAurR1FKk5chKG/exec';
+
+        document.getElementById('rsvpForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const submitBtn = document.getElementById('submitBtn');
+
+            // 取得值
+            const guestName = document.getElementById('guestName').value.trim();
+            const relation = document.querySelector('input[name="relation"]:checked')?.value;
+            const guestCount = document.getElementById('guestCount').value;
+            const childSeat = document.getElementById('childSeat').value;
+            const vegetarian = document.querySelector('input[name="vegetarian"]:checked')?.value;
+            const vegCount = document.getElementById('vegCount').value;
+            const blessing = document.getElementById('blessing').value.trim();
+
+            // 驗證
+            if (!guestName) {
+                alert('請填寫參加人姓名！');
+                return;
+            }
+            if (!relation) {
+                alert('請選擇親屬關係！');
+                return;
+            }
+            if (!guestCount || guestCount < 1) {
+                alert('請填寫參加人數！');
+                return;
+            }
+            if (childSeat === '') {
+                alert('請填寫兒童座椅數量（不需要請填 0）！');
+                return;
+            }
+            if (!vegetarian) {
+                alert('請選擇是否需要素食！');
+                return;
+            }
+            if (vegetarian === '是' && (!vegCount || vegCount < 1)) {
+                alert('請填寫素食份數！');
+                return;
+            }
+
+            // 準備資料
+            const formData = new URLSearchParams();
+            formData.append('參加人姓名', guestName);
+            formData.append('親屬關係', relation);
+            formData.append('參加人數', guestCount);
+            formData.append('兒童座椅數量', childSeat);
+            formData.append('是否需要素食', vegetarian);
+            formData.append('素食份數', vegetarian === '是' ? vegCount : '0');
+            formData.append('祝福的話', blessing);
+            formData.append('送出時間', new Date().toLocaleString('zh-TW'));
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = '送出中...';
+
+            try {
+                await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: formData.toString()
+                });
+
+                // 成功顯示
+                document.getElementById('rsvpForm').style.display = 'none';
+                document.getElementById('successMessage').style.display = 'block';
+
+            } catch (error) {
+                console.error('Error:', error);
+                alert('送出時發生錯誤，請稍後再試或直接聯繫新人。');
+                submitBtn.disabled = false;
+                submitBtn.textContent = '💕 確認出席，送出回覆';
+            }
+        });
+    </script>
+</body>
+</html>
